@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>노드에 접근하기</title>
+    <style></style>
+  </head>
+  <body>
+    <h1>Welcome</h1>
+    <h2>World</h2>
+    <h3>A</h3>
+    <p id="first">
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio sit
+      iure cumque voluptate nemo alias ex quas, nostrum illum explicabo sequi
+      provident a non quae laborum quibusdam dolore nobis repellat!
+    </p>
+    <a href="#" class="link">anchor</a>
+    <h3>B</h3>
+    <p id="second">
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio sit
+      iure cumque voluptate nemo alias ex quas, nostrum illum explicabo sequi
+      provident a non quae laborum quibusdam dolore nobis repellat!
+    </p>
+    <a class="link" href="#">anchor2</a>
+    <h3>C</h3>
+    <p id="third">
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio sit
+      iure cumque voluptate nemo alias ex quas, nostrum illum explicabo sequi
+      provident a non quae laborum quibusdam dolore nobis repellat!
+      <a class="link" href="#">anchor3</a>
+    </p>
+    <script>
+      document.documentElement;
+      document.body;
+      document.head;
+      // document.body.style.backgroundColor = "blue";
+      // document.body.style.opacity = Math.random();
+      //////////////////////////////////////////////////
+      let firstpTag = document.getElementById("first");
+      console.log(firstpTag);
+      let pList = document.getElementsByTagName("p");
+      console.log("pList");
+      for (p of pList) {
+        p.style.fontSize = "30px";
+      }
+      for (p of pList) {
+        p.style.opacity = Math.random();
+      }
+      let aLink = document.getElementsByClassName("link"); // HTMLCollection
+      document.querySelector(".link"); //딱 하나 제일 처음의 노드만 가져온다.
+      document.querySelectorAll(".link"); //NodeList
+      document.querySelector("h3:nth-of-type(2)");
+      document.querySelector("h3:nth-of-type(2)").style.color = "red";
+    </script>
+  </body>
+</html>
