@@ -37,36 +37,65 @@
       <li id="green">Green</li>
     </ul>
     <script>
-      let pListNode = document.querySelectorAll("p");
-      let pListHTML = document.getElementsByTagName("p"); //실시간 반영
-      let red = document.getElementById("red");
-      //   부모
-      red.parentNode; //red의 부모 노드
-      document.documentElement; // HTML
-      document.documentElement.parentNode; // HTML의 부모노드 #document
-      document.documentElement.parentElement; // 부모 노드 중 요소 노드 null (HTML 태그로 이루어진 요소)
-      const ul = document.getElementById("color");
-      //   자식
-      ul.childNodes; // 자식 노드들 전부
-      ul.children; //  자식 노드 중 "요소"들만
-
-      ul.firstChild; // #text
-      ul.lastChild; // #text
-      ul.firstElementChild; //첫번째 요소 노드
-      ul.lastElementChild; // 마지막 요소 노드
-      // 형제
       const blue = document.getElementById("blue");
-      blue.previousSibling; //#text
-      blue.nextSibling; // #text
-      blue.previousElementSibling; // 블루의 전 요소 노드
-      blue.nextElementSibling; // 블루의 다음 요소 노드
-      /////////////////
-      //   5,6,12 노드 사용 안함
-      // Node.ELEMENT_NODE (1) // p나 div 같은 html요소
-      // Node.ATTRIBUTE_NODE (2) // img 태그의 alt값 같은 것
-      //   Node.TEXT_NODE(3); // 텍스트
-      //   Node.COMMENT_NODE(8); // 주석
-      //   Node.DOCUMENT_NODE(9); // document
+      blue.firstChild; // "Blue"
+      blue.firstElementChild; // null
+      let blueTextNode = blue.firstChild;
+      blueTextNode.nodeName; // #text
+      blueTextNode.nodeType; // 3
+      blueTextNode.nodeValue; // "blue"
+      blueTextNode.nodeValue = "파랑"; // "파랑"
+
+      const ul = document.getElementById("color");
+      ul.nodeType; // 1
+      ul.nodeName; //UL //태그명 대문자반환
+      ul.nodeValue; // null //Text노드에서만 nodeValue를 이용해서 수정 가능
+      ul.textContent; // '\n      Red\n      파랑\n      Green\n    '
+      //textConent로 수정은 가능하지만 마크업이 깨진다.
+      // ul.textContent = "royalblue"; //깨짐
+      // ul.textContent = "<li>royalblue</li>"; //제대로 된 마크업을 넣어도 넣은 문자열 그대로 나온다.
+
+      // 이 경우 innerHTML을 사용해야한다
+      // ul.innerHTML = "<li>royalblue</li>";
+      //단점 : 요소를 추가 제거 수정 할 때마다 모든 html을 작성해주어야한다.
+
+      // inner html을 사용하여 자식 텍스트 노드 추가
+      const newLi = document.createElement("li");
+      newLi;
+      newLi.innerHTML = "Yellow";
+      // const ul = document.getElementById("color");
+      ul.appendChild(newLi);
+
+      // inner html을 사용하지않고 자식 텍스트 노드 추가
+      const newLi2 = document.createElement("li");
+      const newText = document.createTextNode("pink");
+      newLi2.appendChild(newText);
+      ul.appendChild(newLi2);
+
+      //insertBefore
+      const newLi3 = document.createElement("li");
+      const textNode3 = document.createTextNode("black");
+      newLi3.appendChild(textNode3);
+      const red = document.getElementById("red");
+      ul.insertBefore(newLi3, red); //넣을 텍스트 노드 , red의 앞에
+      //red 위에 black이 생성됨
+
+      ul.appendChild(red); // red가 가장 밑으로 감
+      ul.insertBefore(red, newLi3); //red가 가장 위로 감(black 이전)
+
+      // 복제
+      const newBlack = newLi3.cloneNode();
+      ul.appendChild(newBlack);
+      const newBlack2 = newLi3.cloneNode(true); //true 추가 = 깊은 복사 | false나 비우면 노드만 복사
+      ul.appendChild(newBlack2);
+
+      //삭제
+      ul.removeChild(red);
+      ul.removeChild(newBlack2);
+      ul.removeChild(ul.firstElementChild); // 첫번째자식요소노드삭제
+      ul.removeChild(ul.lastElementChild); // 첫번째자식요소노드삭제
+
+      // clone
     </script>
   </body>
 </html>
