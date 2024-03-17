@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>test</title>
+  </head>
+  <body>
+    <div>
+      <div><span id="order">1</span>번째 참가자</div>
+      <div>제시어 : <span id="word"></span></div>
+      <div>
+        <input type="text" />
+        <button type="submit">입력</button>
+      </div>
+    </div>
+
+    <script>
+      let number = Number(prompt("몇 명의 참가자가 있습니까?"));
+      if (number) {
+        const $input = document.querySelector("input");
+        const $button = document.querySelector("button");
+        const $order = document.querySelector("#order");
+        const $word = document.querySelector("#word");
+
+        let word;
+        let newWord;
+
+        $input.addEventListener("input", (e) => {
+          newWord = e.target.value;
+        });
+        $button.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (
+            !word ||
+            (word.at(-1) === newWord.at(0) && newWord.length === 3)
+          ) {
+            word = newWord;
+            $word.textContent = word;
+            $input.value = "";
+            $input.focus();
+            const order = Number($order.textContent);
+            if (order + 1 > number) {
+              $order.textContent = 1;
+            } else {
+              $order.textContent = order + 1;
+            }
+          } else {
+            alert("입력값이 맞지 않습니다");
+            $input.value = "";
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
