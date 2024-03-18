@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로또추첨기</title>
+<style>
+.ball {
+  display: inline-block; 
+  border: 1px solid black; 
+  border-radius: 20px; 
+  width: 40px;
+  height: 40px;
+  line-height: 40px; 
+  font-size: 20px; 
+  text-align: center; 
+  margin-right: 20px;
+}
+</style>
+<body>
+<form id="form">
+  <input name="input" placeholder="숫자 6개를 쉼표로 구분해 입력하세요." />
+  <button>추첨</button>
+</form>
+<div id="result">당첨 숫자: </div>
+<div id="bonus">보너스 숫자: </div>
+<script>
+const $form = document.querySelector('#form');
+const $result = document.querySelector('#result');
+const $bonus = document.querySelector('#bonus');
+$form.addEventListener("submit",(e)=>{
+    e.preventDefault();
+
+    const string = event.target.input.value;
+    if(!string.trim()){
+        return alert("숫자를 입력하세요")
+    }
+    const myNumbers = string.split(",").map((v)=>parseInt(v.trim()))
+    if(myNumbers.length!==6){
+        return alert("숫자를 6개 입력하세요.")
+    }
+    if(new Set(myNumbers).size!==6){
+        return alert("중복된 숫자를 입력했습니다.")
+    }
+    if(myNumbers.find((v)=>v>45||v<1)){
+        return alert("1부터 45까지만 입력할 수 있습니다.")
+    }
+
+    const candidate = Array(45).fill().map((v,i)=>i+1);
+    const shuffle = []
+    while(candidate.length > 0){
+        //피셔 예이츠 셔플 알고리즘
+        const random = Math.floor(Math.random()*candidate.length);
+        const spliceArray = candidate.splice(random,1);
+        const value = spliceArray[0];
+        shuffle.push(value);
+    }
+    console.log(shuffle)
+    const winBalls = shuffle.slice(0,6).sort((a,b)=>a-b);
+    const bonus = shuffle(6);
+    console.log(winBalls,bonus);
+
+})
+</script>
+</body>
+</html>
