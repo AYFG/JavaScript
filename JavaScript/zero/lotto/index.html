@@ -7,7 +7,7 @@
 <style>
 .ball {
   display: inline-block; 
-  border: 1px solid black; 
+  border: 1px solid black;
   border-radius: 20px; 
   width: 40px;
   height: 40px;
@@ -15,6 +15,25 @@
   font-size: 20px; 
   text-align: center; 
   margin-right: 20px;
+}
+.ones{
+    background-color: red;
+    color:#fff;
+}
+.tens{
+    background-color: orange;
+    color:#fff;
+}
+.twelves{
+    background-color: yellow;
+}
+.thirds{
+    background-color: blue;
+    color:#fff;
+}
+.fourths{
+    background-color: green;
+    color:#fff;
 }
 </style>
 <body>
@@ -25,12 +44,51 @@
 <div id="result">당첨 숫자: </div>
 <div id="bonus">보너스 숫자: </div>
 <script>
-const $form = document.querySelector('#form');
-const $result = document.querySelector('#result');
-const $bonus = document.querySelector('#bonus');
-$form.addEventListener("submit",(e)=>{
-    e.preventDefault();
+    const $form = document.querySelector('#form');
+    const $result = document.querySelector('#result');
+    const $bonus = document.querySelector('#bonus');
 
+    function drawBall (number,$parent){
+        const $ball = document.createElement("span");
+        $ball.className="ball";
+        $ball.textContent = number;
+        colorize(number,$ball)
+        $parent.appendChild($ball);
+    }
+
+    function colorize(number,$tag){
+        if(number<10){
+            $tag.classList.add("ones")
+        }
+        else if(number<20){
+            $tag.classList.add("tens")
+        }
+        else if(number<30){
+            $tag.classList.add("twelves")
+        }
+        else if(number<40){
+            $tag.classList.add("thirds")
+        }
+        else if(number<50){
+            $tag.classList.add("fourths")
+        }
+    }
+
+    const setTimeoutPromise = ((ms)=>new Promise((resolve,reject)=>{
+        setTimeout(resolve,ms)
+    }))
+
+    let clicked = false;
+
+    $form.addEventListener("submit",async (e)=>{
+        e.preventDefault();
+        if(clicked){
+            return;
+        }
+        clicked =true;
+        $result.innerHTML = "당첨 숫자: "
+        $bonus.innerHTML = "보너스 숫자: "
+        
     const string = event.target.input.value;
     if(!string.trim()){
         return alert("숫자를 입력하세요")
@@ -47,19 +105,60 @@ $form.addEventListener("submit",(e)=>{
     }
 
     const candidate = Array(45).fill().map((v,i)=>i+1);
-    const shuffle = []
+    const shuffle = [];
     while(candidate.length > 0){
         //피셔 예이츠 셔플 알고리즘
-        const random = Math.floor(Math.random()*candidate.length);
+        const random = Math.floor(Math.random() * candidate.length);
         const spliceArray = candidate.splice(random,1);
         const value = spliceArray[0];
         shuffle.push(value);
     }
     console.log(shuffle)
     const winBalls = shuffle.slice(0,6).sort((a,b)=>a-b);
-    const bonus = shuffle(6);
+    const bonus = shuffle[6];
     console.log(winBalls,bonus);
 
+    for(let i = 0; i <  winBalls.length; i++){
+        await setTimeoutPromise(1000)
+        drawBall(winBalls[i],$result)
+    }
+    await setTimeoutPromise(1000);
+    drawBall(bonus,$bonus);
+
+    await setTimeoutPromise(50);
+
+    let count = 0;
+    myNumbers.forEach((my,index)=>{
+        if(winBalls.includes(my)){
+            count++
+            console.log(count)
+        }
+    })
+    switch(count){
+        case 1:
+        alert("1개맞춤")
+        break;
+        case 2:
+        alert("2개맞춤")
+        break;
+        case 3:
+        alert("3개맞춤")
+        break;
+        case 4:
+        alert("4개맞춤")
+        break;
+        case 5:
+        alert("5개맞춤")
+        break;
+        case 6:
+        alert("6개맞춤")
+        break;
+        default:
+        alert("아무것도 못맞춤")
+        break;
+    }
+
+    clicked = false;
 })
 </script>
 </body>
